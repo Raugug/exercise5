@@ -1,12 +1,13 @@
 version: "3"
 services:
   exercise5:
-    build: .
+    build: ./MessageService/
     ports:
-      - "9005:9005"
-    links:
-      - messageapp
-      - mongodb
+      - "9001:9001"
+    depends_on:
+      - "mongodb"
+      - "mongodb2"
+    #command: ["./wait-for-it.sh", "mongodb:27017", "--", "node", "index.js"]
   messageapp:
     image: cabify/backend-bootcamp-messageapp
     ports:
@@ -17,3 +18,10 @@ services:
       - ./data/db:/data/db
     ports:
       - 27017:27017
+  mongodb2:
+    image: mongo
+    volumes:
+      - ./data2/db:/data2/db
+    ports:
+      - 27018:27017
+
